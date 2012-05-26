@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="multilingual_metakeys" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+
+	<name>Multilingual Meta Keys</name>
+
+	<description>The multilingual version of Meta Keys.</description>
+
+	<repo type="github">https://github.com/vlad-ghita/multilingual_metakeys</repo>
+
+	<types>
+		<type>Field Types</type>
+		<type>Multilingual</type>
+	</types>
+
+	<authors>
+		<author>
+			<name github="vlad-ghita" symphony="vladG">Vlad Ghita</name>
+			<email>vlad.micutul@yahoo.com</email>
+			<website>http://www.xanderadvertising.com</website>
+		</author>
+	</authors>
+
+	<dependencies>
+		<dependency version="1.0">https://github.com/brendo/field_metakeys</dependency>
+		<dependency version="1.6">https://github.com/vlad-ghita/frontend_localisation</dependency>
+	</dependencies>
+
+	<releases>
+		<release version="1.0" date='2012-05-26' min="2.3"><![CDATA[
+			* Initial release.
+		]]></release>
+	</releases>
+
+</extension>

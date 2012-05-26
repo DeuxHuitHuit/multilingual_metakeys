@@ -1,0 +1,11 @@
+div.field-multilingual_metakeys label {
+	margin-bottom: 2px;
+}
+
+div.field-multilingual_metakeys div.content label + label {
+	margin: 10px 0 0;
+}
+
+.invalid div.field-multilingual_metakeys {
+	margin-bottom: 0;
+}
