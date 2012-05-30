@@ -26,6 +26,10 @@
 	</dependencies>
 
 	<releases>
+		<release version="1.0.1" date='2012-05-30' min="2.3"><![CDATA[
+			* Fixed POST data persistence when no default keys are set.
+		]]></release>
+
 		<release version="1.0" date='2012-05-26' min="2.3"><![CDATA[
 			* Initial release.
 		]]></release>
