@@ -334,7 +334,7 @@
 
 				// If there's only one 'pair', we'll need to make them an array
 				// so the logic remains consistant
-				if( !is_array($data['key_value']) ){
+				if( !is_array($data['key_value-'.FLang::getMainLang()]) ){
 					foreach( $langs as $lc ){
 						$data["key_value-{$lc}"] = array($data["key_value-{$lc}"]);
 						$data["key_handle-{$lc}"] = array($data["key_handle-{$lc}"]);
