@@ -270,6 +270,7 @@
 			Extension_Multilingual_Metakeys::appendAssets();
 
 			$langs = FLang::getLangs();
+			$main_lang = FLang::getMainLang();
 
 			// Label
 			$label = Widget::Label($this->get('label'));
@@ -294,13 +295,28 @@
 
 				$field_handle = $this->get('element_name');
 
-				foreach( $langs as $lc ){
-					$parts = preg_split('/,\s*/', $this->get("default_keys-$lc"), -1, PREG_SPLIT_NO_EMPTY);
+				// set defaults from POST
+				if( isset($_POST['fields'][$field_handle]) ){
 
-					if( is_array($parts) && !empty($parts) ){
-						foreach( $parts as $i => $key ){
-							$defaults[$i]['keys'][$lc] = $key;
-							$defaults[$i]['vals'][$lc] = $_POST['fields'][$field_handle][$lc][$i]['value'];
+					foreach( $langs as $lc ){
+
+						foreach( $_POST['fields'][$field_handle][$lc] as $i => $data ){
+							$defaults[$i]['keys'][$lc] = $data['key'];
+							$defaults[$i]['vals'][$lc] = $data['value'];
+						}
+
+					}
+				}
+
+				// show default keys
+				else{
+					foreach( $langs as $lc ){
+						$parts = preg_split('/,\s*/', $this->get("default_keys-$lc"), -1, PREG_SPLIT_NO_EMPTY);
+
+						if( is_array($parts) && !empty($parts) ){
+							foreach( $parts as $i => $key ){
+								$defaults[$i]['keys'][$lc] = $key;
+							}
 						}
 					}
 				}
@@ -420,7 +436,7 @@
 					$label->appendChild(Widget::Input("fields[{$this->get('element_name')}][][value-{$lc}]"));
 			else
 				foreach( FLang::getLangs() as $lc )
-					$label->appendChild(Widget::Textarea("fields[{$this->get('element_name')}][][value-{$lc}]", 20, 50));
+					$label->appendChild(Widget::Input("fields[{$this->get('element_name')}][][value-{$lc}]"));
 
 			return $label;
 		}
