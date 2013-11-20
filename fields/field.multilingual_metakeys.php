@@ -453,21 +453,47 @@
 			);
 		}
 
-		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = null, $entry_id = null){
-			$lang_code = FLang::getLangCode();
+        public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = null, $entry_id = null){
+            $new_data = array();
 
-			// If value is empty for this language, load value from main language
-			if( $this->get('def_ref_lang') == 'yes' && $data['key_value-'.$lang_code] === '' ){
-				$lang_code = FLang::getMainLang();
-			}
+            $lc = FLang::getLangCode();
+            $ml = FLang::getMainLang();
 
-			$data['key_handle'] = $data['key_handle-'.$lang_code];
-			$data['key_value'] = $data['key_value-'.$lang_code];
-			$data['value_handle'] = $data['value_handle-'.$lang_code];
-			$data['value_value'] = $data['value_value-'.$lang_code];
+            $normal_keys = array("key_value", "key_handle", "value_value", "value_handle");
+            $local_keys = array("key_value-$lc", "key_handle-$lc", "value_value-$lc", "value_handle-$lc");
 
-			parent::appendFormattedElement($wrapper, $data);
-		}
+            // replace missing values
+            if ($this->get('def_ref_lang') == 'yes' && $lc != $ml) {
+                $main_keys = array("key_value-$ml", "key_handle-$ml", "value_value-$ml", "value_handle-$ml");
+
+                foreach ($local_keys as $key_idx => $key) {
+                    if (!is_array($data[$key])) {
+                        continue;
+                    }
+
+                    $local_data = $data[$key];
+                    $main_data = $data[$main_keys[$key_idx]];
+
+                    // check each value from the key and replace if necessary
+                    foreach ($local_data as $local_idx => $local_value) {
+                        if (empty($local_value)) {
+                            $new_data[$normal_keys[$key_idx]][$local_idx] = $main_data[$local_idx];
+                        }
+                        else {
+                            $new_data[$normal_keys[$key_idx]][$local_idx] = $local_value;
+                        }
+                    }
+                }
+            }
+            // use values as they are
+            else {
+                foreach ($local_keys as $key_idx => $key) {
+                    $new_data[$normal_keys[$key_idx]] = $data[$key];
+                }
+            }
+
+            parent::appendFormattedElement($wrapper, $new_data);
+        }
 
 		public function getParameterPoolValue(array $data, $entry_id = NULL){
 			$lang_code = FLang::getLangCode();
